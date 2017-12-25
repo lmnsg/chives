@@ -139,8 +139,8 @@ export default class extends React.Component {
           gasPrice: '25000000000'
         })
       })
-        .then(() => this.sendRawTransaction(sign(data, key)))
-        .then(cb)
+        .then(() => this.sendRawTransaction(sign(data, key), cb))
+        .catch(cb)
     }
     const contract = new Contract(eth)
     this.token = contract(abi).at(address)
@@ -160,6 +160,7 @@ export default class extends React.Component {
     this.setState({
       [key]: value
     })
+    if (key === 'from' && Eth.isAddress(value)) this.getTokens(value)
   }
 
   transfer() {
